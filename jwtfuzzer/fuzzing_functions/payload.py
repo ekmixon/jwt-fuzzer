@@ -50,7 +50,7 @@ def payload_add_space_to_value(jwt_string):
                 continue
 
             payload_copy = payload.copy()
-            payload_copy[key] = value + ' '
+            payload_copy[key] = f'{value} '
             yield encode_jwt(header, payload_copy, signature)
 
     if isinstance(payload, list):
@@ -59,5 +59,5 @@ def payload_add_space_to_value(jwt_string):
                 continue
 
             payload_copy = payload[:]
-            payload_copy[i] = item + ' '
+            payload_copy[i] = f'{item} '
             yield encode_jwt(header, payload_copy, signature)

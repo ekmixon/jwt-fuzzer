@@ -11,10 +11,9 @@ def payload_remove_iss(jwt_string):
     """
     header, payload, signature = decode_jwt(jwt_string)
 
-    if isinstance(payload, dict):
-        if 'iss' in payload:
-            del payload['iss']
-            yield encode_jwt(header, payload, signature)
+    if isinstance(payload, dict) and 'iss' in payload:
+        del payload['iss']
+        yield encode_jwt(header, payload, signature)
 
 
 def payload_null_iss(jwt_string):
@@ -40,10 +39,9 @@ def payload_iss_empty(jwt_string):
     """
     header, payload, signature = decode_jwt(jwt_string)
 
-    if isinstance(payload, dict):
-        if 'iss' in payload:
-            payload['iss'] = ''
-            yield encode_jwt(header, payload, signature)
+    if isinstance(payload, dict) and 'iss' in payload:
+        payload['iss'] = ''
+        yield encode_jwt(header, payload, signature)
 
 
 def payload_iss_change_one_letter(jwt_string):
@@ -56,14 +54,9 @@ def payload_iss_change_one_letter(jwt_string):
     """
     header, payload, signature = decode_jwt(jwt_string)
 
-    if isinstance(payload, dict):
-        if 'iss' in payload:
-            aud = list(payload['iss'])
+    if isinstance(payload, dict) and 'iss' in payload:
+        aud = list(payload['iss'])
 
-            if aud[0] != 'a':
-                aud[0] = 'a'
-            else:
-                aud[0] = 'b'
-
-            payload['iss'] = ''.join(aud)
-            yield encode_jwt(header, payload, signature)
+        aud[0] = 'a' if aud[0] != 'a' else 'b'
+        payload['iss'] = ''.join(aud)
+        yield encode_jwt(header, payload, signature)

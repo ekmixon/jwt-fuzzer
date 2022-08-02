@@ -130,7 +130,7 @@ def jwt_fuzzer(jwt_string, output_filename):
     for fuzzing_function in FUZZING_FUNCTIONS:
         for i, fuzzed_string in enumerate(fuzzing_function(jwt_string)):
 
-            fuzzing_function_id = '%s-%s' % (fuzzing_function.__name__, i)
+            fuzzing_function_id = f'{fuzzing_function.__name__}-{i}'
 
             output_data.append(dict(fuzzing_function=fuzzing_function_id,
                                     jwt=fuzzed_string))

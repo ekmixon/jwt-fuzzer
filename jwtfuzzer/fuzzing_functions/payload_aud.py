@@ -11,10 +11,9 @@ def payload_remove_aud(jwt_string):
     """
     header, payload, signature = decode_jwt(jwt_string)
 
-    if isinstance(payload, dict):
-        if 'aud' in payload:
-            del payload['aud']
-            yield encode_jwt(header, payload, signature)
+    if isinstance(payload, dict) and 'aud' in payload:
+        del payload['aud']
+        yield encode_jwt(header, payload, signature)
 
 
 def payload_null_aud(jwt_string):
@@ -40,10 +39,9 @@ def payload_reverse_aud(jwt_string):
     """
     header, payload, signature = decode_jwt(jwt_string)
 
-    if isinstance(payload, dict):
-        if 'aud' in payload:
-            payload['aud'] = payload['aud'][::-1]
-            yield encode_jwt(header, payload, signature)
+    if isinstance(payload, dict) and 'aud' in payload:
+        payload['aud'] = payload['aud'][::-1]
+        yield encode_jwt(header, payload, signature)
 
 
 def payload_change_one_letter_aud(jwt_string):
@@ -56,14 +54,9 @@ def payload_change_one_letter_aud(jwt_string):
     """
     header, payload, signature = decode_jwt(jwt_string)
 
-    if isinstance(payload, dict):
-        if 'aud' in payload:
-            aud = list(payload['aud'])
+    if isinstance(payload, dict) and 'aud' in payload:
+        aud = list(payload['aud'])
 
-            if aud[0] != 'a':
-                aud[0] = 'a'
-            else:
-                aud[0] = 'b'
-
-            payload['aud'] = ''.join(aud)
-            yield encode_jwt(header, payload, signature)
+        aud[0] = 'a' if aud[0] != 'a' else 'b'
+        payload['aud'] = ''.join(aud)
+        yield encode_jwt(header, payload, signature)

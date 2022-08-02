@@ -11,15 +11,15 @@ proxies = {
 requests.packages.urllib3.disable_warnings()
 
 
+#
+# You might want to edit the following lines in order to define where and how to send
+# the fuzzed JWT.
+#
+url = 'https://target.com'
+
 for fuzzing_data in json.load(open('../output.json')):
     fuzzing_function = fuzzing_data['fuzzing_function']
     jwt = fuzzing_data['jwt']
-
-    #
-    # You might want to edit the following lines in order to define where and how to send
-    # the fuzzed JWT.
-    #
-    url = 'https://target.com'
 
     # Note the X-Fuzzing-Function header, this is useful to search your proxy logs to
     # identify the HTTP request which triggered something interesting
@@ -27,8 +27,9 @@ for fuzzing_data in json.load(open('../output.json')):
         'X-Fuzzing-Function': fuzzing_function,
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Cookie': 'auth=%s' % jwt
+        'Cookie': f'auth={jwt}',
     }
+
 
     response = requests.get(url, headers=headers, proxies=proxies, verify=False, allow_redirects=False)
 
@@ -41,4 +42,4 @@ for fuzzing_data in json.load(open('../output.json')):
         success = False
 
     if success or response.status_code != 302:
-        print('%s:%s:%s' % (fuzzing_function, response.status_code, success))
+        print(f'{fuzzing_function}:{response.status_code}:{success}')

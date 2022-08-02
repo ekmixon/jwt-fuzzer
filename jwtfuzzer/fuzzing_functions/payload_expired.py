@@ -11,10 +11,9 @@ def payload_remove_exp(jwt_string):
     """
     header, payload, signature = decode_jwt(jwt_string)
 
-    if isinstance(payload, dict):
-        if 'exp' in payload:
-            del payload['exp']
-            yield encode_jwt(header, payload, signature)
+    if isinstance(payload, dict) and 'exp' in payload:
+        del payload['exp']
+        yield encode_jwt(header, payload, signature)
 
 
 def payload_null_exp(jwt_string):
@@ -40,10 +39,9 @@ def payload_exp_one(jwt_string):
     """
     header, payload, signature = decode_jwt(jwt_string)
 
-    if isinstance(payload, dict):
-        if 'exp' in payload:
-            payload['exp'] = 1
-            yield encode_jwt(header, payload, signature)
+    if isinstance(payload, dict) and 'exp' in payload:
+        payload['exp'] = 1
+        yield encode_jwt(header, payload, signature)
 
 
 def payload_exp_string(jwt_string):
@@ -55,7 +53,6 @@ def payload_exp_string(jwt_string):
     """
     header, payload, signature = decode_jwt(jwt_string)
 
-    if isinstance(payload, dict):
-        if 'exp' in payload:
-            payload['exp'] = str(payload['exp'])
-            yield encode_jwt(header, payload, signature)
+    if isinstance(payload, dict) and 'exp' in payload:
+        payload['exp'] = str(payload['exp'])
+        yield encode_jwt(header, payload, signature)
